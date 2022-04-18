@@ -1,0 +1,24 @@
+version: '2'
+services:
+  master:
+    image: redis:latest
+    container_name: redis-master
+    command: redis-server --requirepass gorgeous
+    ports:
+    - "6379:6379"
+  slave1:
+    image: redis:latest
+    container_name: redis-slave-1
+    ports:
+    - "6380:6379"
+    command: redis-server --slaveof redis-master 6379 --requirepass gorgeous --masterauth gorgeous 
+    depends_on:
+    - master
+  slave2:
+    image: redis:latest
+    container_name: redis-slave-2
+    ports:
+    - "6381:6379"
+    command: redis-server --slaveof redis-master 6379 --requirepass gorgeous --masterauth gorgeous
+    depends_on:
+    - master
